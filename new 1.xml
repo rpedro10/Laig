@@ -94,9 +94,9 @@
 <MATERIAL id="null" />    
 <TEXTURE id="null" />       			
 
-        <SCALE sx="6" sy="1" sz="5" />
-        <TRANSLATION x="0" y="0" z="4" />
+        <TRANSLATION x="7.5" y="0" z="7.5" />
         <ROTATION axis="x" angle="-90" />
+        <SCALE sx="15" sy="15" sz="0.2" />
 
  <DESCENDANTS>
 
@@ -112,9 +112,8 @@
 <TEXTURE id="null" />       			
 
  <SCALE sx="3" sy="0.5" sz="2" />
- <TRANSLATION x="12" y="5.8" z="4.75" />
- <!-- <ROTATION axis="x" angle="-90" /> -->
-
+ <TRANSLATION x="12" y="0" z="8" />
+ 
 <DESCENDANTS>
 
 <NODEREF id="tampo" />    
