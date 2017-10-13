@@ -3,15 +3,15 @@
  * @constructor
 **/
 
-function MyGraphLeaf(graph, xmlelem, args, id) {
+function MyGraphLeaf(graph, xmlelem, args) {
 	
 	this.graph = graph;
 	this.primitive = null;
 	this.type = xmlelem;
-
+/**
 	if(id != "noid")
 		this.id= id;
-
+*/
 	switch(xmlelem)
 	{
 		case "rectangle":

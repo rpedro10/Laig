@@ -1348,14 +1348,6 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
 						else
 							this.warn("Error in leaf");
 
-                        var id = this.reader.getString(descendants[j], "id");
-
-                        if(id == null){
-                            id = "noid";
-                            this.log("    leaf without id");
-                        }
-                        else
-                            this.log("    Leaf id: " + id)
 
                         var args = this.reader.getString(descendants[j], 'args');
 
@@ -1365,7 +1357,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                             this.warn("No args in leaf");
 						
 						//parse leaf
-                        var leaf = new MyGraphLeaf(this, type, args, id);
+                        var leaf = new MyGraphLeaf(this, type, args);
                         this.leaves.push(leaf);
                         this.nodes[nodeID].addLeaf(leaf);
                         sizeChildren++;
