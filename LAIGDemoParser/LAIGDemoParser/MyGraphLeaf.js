@@ -3,15 +3,15 @@
  * @constructor
 **/
 
-function MyGraphLeaf(graph, xmlelem, args) {
+function MyGraphLeaf(graph, xmlelem, args, id) {
 	
 	this.graph = graph;
 	this.primitive = null;
 	this.type = xmlelem;
-/**
+
 	if(id != "noid")
 		this.id= id;
-*/
+
 	switch(xmlelem)
 	{
 		case "rectangle":
@@ -20,7 +20,7 @@ function MyGraphLeaf(graph, xmlelem, args) {
 		break;
 
 		case "cylinder":
-		this.primitive = new MyCylinder(this.graph.scene, args);
+		this.primitive = new MyCylinderWithTopAndBottom(this.graph.scene, args);
 		break;
 
 		case "sphere":
