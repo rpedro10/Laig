@@ -6,7 +6,7 @@
 function MyGraphLeaf(graph, xmlelem, args, id) {
 	
 	this.graph = graph;
-	this.primitive = null;
+	this.obj = null;
 	this.type = xmlelem;
 
 	if(id != "noid")
@@ -15,26 +15,29 @@ function MyGraphLeaf(graph, xmlelem, args, id) {
 	switch(xmlelem)
 	{
 		case "rectangle":
-		this.primitive = new MyQuad(this.graph.scene, args);
-		console.log
+		this.obj = new MyQuad(this.graph.scene, args);
 		break;
 
 		case "cylinder":
-		this.primitive = new MyCylinderWithTopAndBottom(this.graph.scene, args);
+		this.obj = new MyCylinderWithTopAndBottom(this.graph.scene, args);
 		break;
 
 		case "sphere":
-		this.primitive = new MySphere(this.graph.scene, args);
+		this.obj = new MySphere(this.graph.scene, args);
 		break;
 
 		case "triangle":
-		this.primitive = new MyTriangle(this.graph.scene, args);
+		this.obj = new MyTriangle(this.graph.scene, args);
 		break;
+		case "patch":
+		 console.log(args);
+		 this.obj= new MyPatch(this.graph.scene, args);
 	}
 }
 
+
 MyGraphLeaf.prototype.display = function(){
 
-	if(this.primitive != null)
-		this.primitive.display();
+	if(this.obj != null)
+		this.obj.display();
 }

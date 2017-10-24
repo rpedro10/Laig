@@ -44,9 +44,9 @@
     <LIGHT id="light3">                                   
         <enable value ="1" />                   	       
         <position x="30" y="10" z="20" w="1" />       			
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />           	
-        <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />       
-        <specular r="0.6" g="0.6" b="0.6" a="1.0" />      
+        <ambient r="1" g="0.5" b="0.5" a="1.0" />           	
+        <diffuse r="1" g="0.8" b="0.8" a="1.0" />       
+        <specular r="1" g="1" b="0.6" a="1.0" />      
     </LIGHT>
 </LIGHTS>
 
@@ -153,6 +153,8 @@
 		<NODEREF id="candeeiro" />   
 		<NODEREF id="chair" />   
 		<NODEREF id="luz_candeeiro" /> 
+		<NODEREF id="donut" />   
+
 
   
 
@@ -166,7 +168,7 @@
 </NODE>
 
 <NODE id="floor">
-        <MATERIAL id= "null" />
+        <MATERIAL id= "metalic" />
         <TEXTURE id= "wood" />
 
         <TRANSLATION x="0" y="0" z="20" />
@@ -238,7 +240,7 @@
         <MATERIAL id="null" />     
         <TEXTURE id="bola" />                   
 
-       <TRANSLATION x="1" y="1.25" z="1.5" />
+       <TRANSLATION x="2" y="1.25" z="1" />
         <SCALE sx="0.10" sy="0.10" sz="0.10" />
         
         <DESCENDANTS>
@@ -376,13 +378,15 @@
            </DESCENDANTS>
       </NODE>
 
-      <!--  The paiting -->
+      <!-- Quadro -->
 
 <NODE id="quadro">
    <MATERIAL id="null" />
    <TEXTURE id="quadro" />
 
-   <TRANSLATION x="20" y="2" z="0" />
+   <TRANSLATION x="10" y="-5" z="0" />
+      <SCALE sx="3" sy="2" sz="1" />
+
 
    <DESCENDANTS>
        <NODEREF id="facepintura1" />
@@ -411,11 +415,11 @@
 
 <NODE id="facepintura2">
    <MATERIAL id="defaultMaterial" />
-   <TEXTURE id="null" />
+   <TEXTURE id="pernas" />
 
    <TRANSLATION x="0" y="5" z="0" />
    <ROTATION axis="x" angle="90" />
-   <SCALE sx="3" sy="2" sz="1" />
+   <SCALE sx="0.5" sy="2" sz="1" />
 
    <DESCENDANTS>
      <LEAF  type="rectangle" args="0 1 1 0" />
@@ -425,11 +429,11 @@
 
 <NODE id="facepintura3">
    <MATERIAL id="defaultMaterial" />
-   <TEXTURE id="null" />
+   <TEXTURE id="pernas" />
 
    <TRANSLATION x="3" y="5" z="0.5" />
    <ROTATION axis="y" angle="90" />
-   <SCALE sx="1.5" sy="2" sz="1" />
+   <SCALE sx="0.5" sy="2" sz="3" />
 
    <DESCENDANTS>
      <LEAF  type="rectangle" args="0 1 1 0" />
@@ -439,11 +443,11 @@
 
 <NODE id="facepintura4">
    <MATERIAL id="defaultMaterial" />
-   <TEXTURE id="null" />
+   <TEXTURE id="pernas" />
 
    <TRANSLATION x="0" y="5" z="0" />
    <ROTATION axis="y" angle="-90" />
-   <SCALE sx="1.5" sy="1" sz="1" />
+   <SCALE sx="0.5" sy="2" sz="1" />
 
    <DESCENDANTS>
      <LEAF  type="rectangle" args="0 1 1 0" />
@@ -453,11 +457,11 @@
 
 <NODE id="facepintura5">
   <MATERIAL id="defaultMaterial" />
-  <TEXTURE id="null" />
+  <TEXTURE id="pernas" />
 
   <TRANSLATION x="0" y="7" z="0.5" />
   <ROTATION axis="x" angle="-90" />
-  <SCALE sx="3" sy="1" sz="1" />
+  <SCALE sx="3" sy="1" sz="0.25" />
 
   <DESCENDANTS>
     <LEAF  type="rectangle" args="0 1 1 0" />
@@ -466,12 +470,11 @@
 </NODE>
 
 <NODE id="facepintura6">
-  <MATERIAL id="defaultMaterial" />
-  <TEXTURE id="null" />
+  <MATERIAL id="null" />
+  <TEXTURE id="pernas" />
 
   <TRANSLATION x="0.25" y="5.25" z="0.6" />
-  <ROTATION axis="x" angle="0" />
-  <SCALE sx="1.5" sy="0.5" sz="1" />
+  <SCALE sx="0.5" sy="0" sz="6" />
 
   <DESCENDANTS>
     <LEAF  type="rectangle" args="0 1 1 0" />
@@ -497,10 +500,10 @@
         <TEXTURE id="trunk" />                  
 
         <ROTATION axis="x" angle="90" />
-        <TRANSLATION x="1.7" y="8" z="-2" />
+        <TRANSLATION x="1.4" y="8" z="-1.9" />
 
         <DESCENDANTS>
-                    <LEAF type="cylinder" args="2 1 1 20 20" /> 
+                    <LEAF type="cylinder" args="2 1 1 20 20 1 1" /> 
         </DESCENDANTS>
 
     </NODE>
@@ -510,7 +513,7 @@
         <MATERIAL id="null" />      
         <TEXTURE id="leaves" />                 
 
-        <TRANSLATION x="0" y="5" z="5" />
+        <TRANSLATION x="0" y="4.7" z="5" />
         <SCALE sx="0.2" sy="1" sz="0.2" />
 
         <DESCENDANTS>
@@ -956,6 +959,38 @@
         </DESCENDANTS>
 
     </NODE>
+
+    <NODE id="donut">       
+        <MATERIAL id="null" />     
+        <TEXTURE id="null" /> 
+                <TRANSLATION x="10" y="3" z="6" />
+                   <SCALE sx="0.5" sy="0.5" sz="0.5" />
+        <ROTATION axis="x" angle="60" />
+
+
+        <DESCENDANTS>
+                    <LEAF id="patch1" type="patch" args="20 20" > 
+                    <CPLINE>
+						<CPOINT xx="-1.5" yy="-1.5" zz="0" ww="1" />
+						<CPOINT xx="-1.5" yy="1.5" zz="0" ww="1" />
+					</CPLINE>
+                    <CPLINE>
+                    	<CPOINT xx="0" yy="-1.5" zz="3.0" ww="1" />    
+                    	<CPOINT xx="0" yy="1.5" zz="3" ww="1" />    
+
+                   	 </CPLINE>
+                   	 <CPLINE>
+                    	<CPOINT xx="1.5" yy="-1.5" zz="0" ww="1" />    
+                    	<CPOINT xx="1.5" yy="1.5" zz="0" ww="1" />    
+
+                   	 </CPLINE>
+                   	 			</LEAF>
+
+
+        </DESCENDANTS>
+
+    </NODE>
+
 
     
 

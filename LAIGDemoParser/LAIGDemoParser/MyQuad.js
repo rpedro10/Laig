@@ -6,7 +6,11 @@
  */
 function MyQuad(scene, args) {
     CGFobject.call(this,scene);
-    this.args =  args.split(" ").map(Number);
+ this.args = args
+ 	minS =  0.0;
+ 	minT = 0.0;
+ 	maxS =1.0;
+ 	maxT = 1.0;
     this.initBuffers();
 };
 
@@ -15,48 +19,47 @@ MyQuad.prototype.constructor=MyQuad;
 
 MyQuad.prototype.initBuffers = function () {
 
-    this.vertices = [
-        this.args[0], this.args[1], 0,
-        this.args[2], this.args[1], 0,
-        this.args[2], this.args[3], 0,
-        this.args[0], this.args[3], 0
+    var coordenates = this.args.split(" "); //left-top--- right-bottom
+
+ 	this.vertices = [
+ 	coordenates[0], coordenates[3], 0,
+ 	coordenates[2],coordenates[3], 0,
+ 	coordenates[0],coordenates[1], 0,
+ 	coordenates[2],coordenates[1], 0
+ 	];
+
+ 	this.indices = [
+ 	0, 1, 2,
+ 	3, 2, 1,
+ 	];
+
+ 	this.normals = [
+ 	0,0,1,
+ 	0,0,1,
+ 	0,0,1,
+ 	0,0,1,
+
+
+ 	];
+
+ 	this.texCoords = [
+        minS,maxT,
+        maxS,maxT,
+        minS,minT,
+        maxS,minT
     ];
 
-    this.indices = [
-        2, 1, 0,
-        0,3,2
-    ];
-
-    this.normals = [
-        0, 0, 1,
-        0, 0, 1,
-        0, 0, 1,
-        0, 0, 1
-    ];
-
-    
-    this.baseTexCoords = [
-        0, 1,
-        Math.abs(this.args[2]-this.args[0]), 1,
-         Math.abs(this.args[2]-this.args[0]) , 
-         1-Math.abs(this.args[1]-this.args[3]),
-       0,1- Math.abs(this.args[1]-this.args[3])
-    ];
-
-    this.texCoords = this.baseTexCoords.slice();
-    
-
-    this.primitiveType=this.scene.gl.TRIANGLES;
-    this.initGLBuffers();
+ 	this.primitiveType = this.scene.gl.TRIANGLES;
+ 	this.initGLBuffers();
 };
 
 
 MyQuad.prototype.updateTex = function(S, T) {
-    for (var i = 0; i < this.texCoords.length; i+=2) {
-        this.texCoords[i] = this.baseTexCoords[i]/S;
-        this.texCoords[i+1] = this.baseTexCoords[i+1]/T;
-    }
+    for (var i = 0; i < this.texCoords.length; i += 2) {
+			this.texCoords[i] = this.texCoords[i] / s;
+			this.texCoords[i + 1] = this.textCoords[i+1] / t;
+	}
 
-    this.updateTexCoordsGLBuffers();
+	this.updateTexCoordsGLBuffers();
 };
 

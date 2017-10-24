@@ -9,6 +9,9 @@ var MATERIALS_INDEX = 4;
 var LEAVES_INDEX = 5;
 var NODES_INDEX = 6;
 
+
+
+
 /**
  * MySceneGraph class, representing the scene graph.
  * @constructor
@@ -1164,6 +1167,22 @@ MySceneGraph.prototype.parseMaterials = function(materialsNode) {
  * Parses the <NODES> block.
  */
 MySceneGraph.prototype.parseNodes = function(nodesNode) {
+
+     var uDivisions;
+    var vDivisions;
+
+    var patchID;
+    var uDegree=0;
+    var vDregree;
+
+    var flag1 = false;
+    var flag2 = false;
+
+    var controlPoints = [];
+
+    var patchArgs=[];
+
+   
     
     // Traverses nodes.
     var children = nodesNode.children;
@@ -1198,7 +1217,7 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             // Gathers child nodes.
             var nodeSpecs = children[i].children;
             var specsNames = [];
-            var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "DESCENDANTS"];
+            var possibleValues = ["MATERIAL", "TEXTURE", "TRANSLATION", "ROTATION", "SCALE", "DESCENDANTS","CPOINT"];
             for (var j = 0; j < nodeSpecs.length; j++) {
                 var name = nodeSpecs[j].nodeName;
                 specsNames.push(nodeSpecs[j].nodeName);
@@ -1312,6 +1331,9 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                     break;
                 }
             }
+           
+
+
             
             // Retrieves information about children.
             var descendantsIndex = specsNames.indexOf("DESCENDANTS");
@@ -1322,6 +1344,8 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
             
             var sizeChildren = 0;
             for (var j = 0; j < descendants.length; j++) {
+
+                
                 if (descendants[j].nodeName == "NODEREF")
 				{
                     
@@ -1341,48 +1365,139 @@ MySceneGraph.prototype.parseNodes = function(nodesNode) {
                 else
 					if (descendants[j].nodeName == "LEAF")
 					{
-						var type=this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle']);
+						var type=this.reader.getItem(descendants[j], 'type', ['rectangle', 'cylinder', 'sphere', 'triangle','patch']);
 						
 						if (type != null)
 							this.log("   Leaf: "+ type);
 						else
 							this.warn("Error in leaf");
-							/**
+                        
 
-                        var id = this.reader.getString(descendants[j], "id");
-
-                        if(id == null){
-                            id = "noid";
-                            this.log("    leaf without id");
-                        }
-                        else
-                            this.log("    Leaf id: " + id)
-*/
                         var args = this.reader.getString(descendants[j], 'args');
 
                         if(args != null)
                             this.log("    Leaf args: " + args);
                         else
                             this.warn("No args in leaf");
-						
+
+                      
+
+                      if (type == "patch"){                       
+                                
+
+                          var temp = args.split(" ");
+
+	                       uDivisions = parseFloat(temp[0]);
+	                       vDivisions = parseFloat(temp[1]);
+	                    
+
+                        }else{
+                
 						//parse leaf
                         var leaf = new MyGraphLeaf(this, type, args);
                         this.leaves.push(leaf);
                         this.nodes[nodeID].addLeaf(leaf);
                         sizeChildren++;
+                        }
 					}
+					
+					else if(descendants[j].nodeName == "CPLINE"){
+					   
+					    console.log("found tag CPLINE");
+					 //  console.log(descendants[j]);
+					//   console.log( descendants[j].children);
+
+					if (flag1 == false){
+					    var npoints = descendants[j].children.length;
+					   console.log("n pontos: " + npoints);
+					 //  console.log(flag1);
+					 uDegree++;
+					 flag1=true;
+
+                        var points=[];
+
+					   for (var k =0 ;k<npoints; k++){
+					       var xx = this.reader.getString(descendants[j].children[k], 'xx');
+					       var yy = this.reader.getString(descendants[j].children[k], 'yy');
+					       var zz = this.reader.getString(descendants[j].children[k], 'zz');
+					       var ww = this.reader.getString(descendants[j].children[k], 'ww');
+					     console.log("x= "+xx);
+					      console.log("y= "+yy);
+					       console.log("z= "+zz);
+
+					    //   points.push(new Point(xx, yy, zz,ww));
+
+					    var p = [xx, yy, zz,ww];
+					    points.push(p);
+
+}
+
+                controlPoints.push(points);
+
+
+					}
+					else{
+
+					        var npoints = descendants[j].children.length;
+					   console.log("n pontos: " + npoints);
+					 //  console.log(flag1);
+					 vDregree= npoints;
+					 uDegree++;
+                    flag2=true;
+                        var ppp=[];
+
+					   for (var k =0 ;k<npoints; k++){
+					       var xx = this.reader.getString(descendants[j].children[k], 'xx');
+					       var yy = this.reader.getString(descendants[j].children[k], 'yy');
+					       var zz = this.reader.getString(descendants[j].children[k], 'zz');
+					       var ww = this.reader.getString(descendants[j].children[k], 'ww');
+					       console.log("x= "+xx);
+					       console.log("y= "+yy);
+					      console.log("z= "+zz);
+
+					    //   points.push(new Point(xx, yy, zz,ww));
+
+					    var px = [xx, yy, zz,ww];
+					    ppp.push(px);
+
+}
+
+                controlPoints.push(ppp);
+
+					}
+                    if(flag2==true){
+					   	//parse leaf
+                        patchArgs.push(uDivisions);
+                        patchArgs.push(vDivisions);
+                        patchArgs.push(uDegree-1);
+                        patchArgs.push(vDregree-1);
+                        patchArgs.push(controlPoints);
+                        var leaf = new MyGraphLeaf(this, type,patchArgs);
+                        this.leaves.push(leaf);
+                        this.nodes[nodeID].addLeaf(leaf);
+                        sizeChildren++;
+                    }
+
+					}
+			
 					else
+				
 						this.onXMLMinorError("unknown tag <" + descendants[j].nodeName + ">");
 
             }
+
+            
             if (sizeChildren == 0)
-                return "at least one descendant must be defined for each intermediate node";
+            console.log("x");
+               // return "at least one descendant must be defined for each intermediate node";
         } 
         else
             this.onXMLMinorError("unknown tag name <" + nodeName);
     }
 
     console.log("Parsed nodes");
+
+    console.log(patchArgs);
     return null ;
 }
 
@@ -1446,10 +1561,10 @@ MySceneGraph.prototype.displayScene = function() {
 
     var rootn = this.nodes[this.idRoot];
 
-    this.drawEverything(rootn, this.defaultMaterialID, null);
+    this.displayObjects(rootn, this.defaultMaterialID, null);
 }
 
-MySceneGraph.prototype.drawEverything = function(node, mat, tex){
+MySceneGraph.prototype.displayObjects = function(node, mat, tex){
 
     var material = mat;
     var texture = tex;
@@ -1464,7 +1579,7 @@ MySceneGraph.prototype.drawEverything = function(node, mat, tex){
     this.scene.multMatrix(node.transformMatrix);
 
     for(var i = 0; i < node.children.length; i++){
-        this.drawEverything(this.nodes[node.children[i]], material, texture);
+        this.displayObjects(this.nodes[node.children[i]], material, texture);
     }
 
     for(var j = 0; j < node.leaves.length; j++){
